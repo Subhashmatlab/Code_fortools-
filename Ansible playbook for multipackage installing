@@ -1,0 +1,21 @@
+
+---
+- name: Install multiple packages
+  hosts: all  # Specify the target hosts or host groups
+
+  tasks:
+    - name: Update package cache
+      become: yes  # Use privilege escalation (sudo)
+      apt:
+        update_cache: yes  # Update package cache on Debian/Ubuntu systems
+      when: ansible_os_family == 'Debian'  # Only execute on Debian/Ubuntu systems
+
+    - name: Install packages
+      become: yes  # Use privilege escalation (sudo)
+      package:
+        name:
+          - package1
+          - package2
+          - package3
+        state: present  # Ensure packages are installed
+
