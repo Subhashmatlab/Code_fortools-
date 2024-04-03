@@ -1,0 +1,18 @@
+
+- name: Use variables in playbook
+  hosts: all  # Specify the target hosts or host groups
+
+  vars:
+    my_variable: "value"  # Define a variable named my_variable
+
+  tasks:
+    - name: Print the value of the variable
+      debug:
+        msg: "The value of my_variable is {{ my_variable }}"
+In this playbook:
+
+The playbook is named variable.yml.
+It targets all hosts specified in your inventory (hosts: all).
+It defines a variable named my_variable with the value "value".
+It consists of one task that prints the value of the variable using the debug module.
+You can modify the playbook according to your specific requirements, such as changing the target hosts, defining additional variables, or performing different tasks based on the values of variables.
