@@ -1,0 +1,52 @@
+- name: Install OpenJDK 8
+  hosts: your_target_hosts
+  become: yes
+
+  tasks:
+    - name: Install OpenJDK 8 on Debian/Ubuntu
+      apt:
+        name: openjdk-8-jdk
+        state: present
+      when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+
+    - name: Install OpenJDK 8 on Red Hat/CentOS
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+====================================================================================
+
+---
+- name: Install package on hosts
+  hosts: all  # Specify the target hosts or host groups
+
+  tasks:
+    - name: Update package cache (Debian/Ubuntu)
+      become: yes  # Use privilege escalation (sudo)
+      apt:
+        update_cache: yes  # Update package cache on Debian/Ubuntu systems
+      when: ansible_os_family == 'Debian'  # Only execute on Debian/Ubuntu systems
+
+    - name: Update package cache (RedHat/CentOS)
+      become: yes  # Use privilege escalation (sudo)
+      yum:
+        update_cache: yes  # Update package cache on RedHat/CentOS systems
+      when: ansible_os_family == 'RedHat'  # Only execute on RedHat/CentOS systems
+
+    - name: Install package
+      become: yes  # Use privilege escalation (sudo)
+      package:
+        name: my_package  # Specify the name of the package to install
+        state: present  # Ensure the package is installed
+
+
+The playbook is named installpackage.yml.
+It targets all hosts specified in your inventory (hosts: all).
+It consists of three tasks:
+The first task updates the package cache on Debian/Ubuntu systems using the apt module. This task is conditional and will only execute on systems with the Debian family.
+The second task updates the package cache on RedHat/CentOS systems using the yum module. This task is conditional and will only execute on systems with the RedHat family.
+The third task installs a package named my_package using the package module. The state parameter is set to present to ensure that the package is installed.
+You can modify the playbook according to your specific requirements, such as changing the target hosts, updating the package name, or adjusting the package management modules based on your target operating system.
+
+      
