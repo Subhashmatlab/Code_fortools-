@@ -1,0 +1,32 @@
+---
+- name: Execute tasks based on OS
+  hosts: all  # Specify the target hosts or host groups
+
+  tasks:
+    - name: Perform tasks on Debian-based systems
+      when: ansible_os_family == 'Debian'
+      debug:
+        msg: "This task is executed on Debian-based systems"
+
+    - name: Perform tasks on RedHat-based systems
+      when: ansible_os_family == 'RedHat'
+      debug:
+        msg: "This task is executed on RedHat-based systems"
+
+    - name: Perform tasks on Windows systems
+      when: ansible_os_family == 'Windows'
+      debug:
+        msg: "This task is executed on Windows systems"
+
+The playbook is named os-condition.yml.
+It targets all hosts specified in your inventory (hosts: all).
+It consists of three tasks:
+The first task is conditionally executed on Debian-based systems. It uses the ansible_os_family variable to check if the operating system family is Debian.
+The second task is conditionally executed on RedHat-based systems. It uses the ansible_os_family variable to check if the operating system family is RedHat.
+The third task is conditionally executed on Windows systems. It uses the ansible_os_family variable to check if the operating system family is Windows.
+You can modify the playbook as needed, adding or removing tasks and adjusting the conditionals to match your specific requirements for different operating systems.
+
+
+
+
+
