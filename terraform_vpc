@@ -47,6 +47,46 @@ resource "aws_network_interface" "foo" {
     Name = "primary_network_interface"
   }
 }
+=================================================
+resource "aws_network_acl" "main" {
+  vpc_id = aws_vpc.main.id
+
+  egress {
+    protocol   = "tcp"
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = "10.3.0.0/18"
+    from_port  = 443
+    to_port    = 443
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "10.3.0.0/18"
+    from_port  = 80
+    to_port    = 80
+  }
+
+  tags = {
+    Name = "main"
+  }
+}
+==================================================
+resource "aws_nat_gateway" "example" {
+  allocation_id = aws_eip.example.id
+  subnet_id     = aws_subnet.example.id
+
+  tags = {
+    Name = "gw NAT"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.example]
+}
+===================================================
 
 resource "aws_instance" "foo" {
   ami           = "ami-005e54dee72cc1d00" # us-west-2
